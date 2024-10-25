@@ -1,0 +1,27 @@
+.selected_range {
+  background: #c62222 !important;
+  color: white !important;
+}
+.header_table {
+  margin-top: 1em !important;
+}
+.menu_video_map{
+  height: calc(100vh - 100px);
+  padding: 1em;
+}
+
+.float-right {
+  float: right;
+}
+
+.row-actived {
+  background-color: #FFE5E5 !important;
+}
+
+.table_driver{
+  border: 1px solid #ebebed;
+  padding: 12px;
+  border-radius: 5px;
+  box-shadow: rgba(30, 30, 30, 0.16) 0px 1px 1px; 
+  
+}

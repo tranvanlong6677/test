@@ -1,0 +1,86 @@
+.change-status-box {
+  text-align: left;
+  border-bottom: 2px solid #F1F1F1;
+}
+
+.table-result .MuiTableCell-root {
+  border-bottom: 1px solid #F1F1F1;
+  padding: 0.5em;
+}
+
+.btnDevice {
+  cursor: pointer;
+  color: #C62222;
+}
+
+.badge-actived, .badge-inActived {
+  font-size: 14px !important;
+  font-weight: 400;
+  border-radius: 4px !important;
+}
+
+.badge-actived {
+  background-color: #27AE60;
+}
+
+.badge-inActived {
+  background-color: #AEB1C5;
+}
+
+.max-width-1600 {
+  max-width: 1600px !important;
+}
+
+.hover-red:hover  {
+  color: red;
+}
+
+.list-menu-device {
+  font-size: 14px !important;
+}
+
+
+.popover-device .MuiPopover-paper {
+  padding: 0 0.3em !important;
+  box-shadow:-1px 2px 7px -2px #e8e8e8 !important;
+}
+
+.searchInputDevice {
+  width: 365px  !important;
+  background: white;
+  border-radius: 4px !important;
+  height: 40px !important;
+  border: 1px solid #E5E5E8 !important;
+}
+
+.searchInputDevice fieldset {
+  display: none;
+}
+
+.filter-item {
+  width: 352px !important;
+}
+
+.title-filter {
+  font-size: 18px;
+  color: #C62222;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.label-input-filter {
+  font-size: 14px;
+  color: #858C93;
+}
+
+
+
+.filter-item .MuiInputBase-formControl fieldset {
+  top: 0px !important;
+}
+
+.device-active-toolbar {
+  background: white !important;
+  color: #C62222;
+  box-shadow: none !important;
+}

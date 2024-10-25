@@ -1,0 +1,82 @@
+.info_vehicle_pophover { 
+  border-radius: 1em;
+  background-color: rgb(255, 200, 138);
+  padding: 1em;
+} 
+/* style={{ backgroundColor: 'white', border: '1px solid black', opacity: 0.75, padding: 12 }} */
+
+.map {
+  position: relative;
+}
+.menu_map {
+  padding-top: 50px;
+  padding: 1em;
+  max-height: 90vh !important;
+  background-color: #d7dae6de !important;
+  width: 300px;
+  height: 450px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.show_menu {
+  position: absolute !important;
+  top: 11px;
+  left: 0px;
+  background-color: white !important;
+  z-index: 1;
+  cursor: pointer;
+  box-shadow:  rgb(158 158 158 / 87%) 7px 9px 15px 0px;
+  border: 0px !important;
+  padding: 0px !important;
+  text-transform: none;
+  border-radius: 2px!important;
+  height: 38px !important;
+}
+
+.show_menu button:hover {
+  border-radius: 2px!important;
+  background-color: gray !important;
+
+}
+
+.vehicle_table_map {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-height: 310px !important;
+  background-color: transparent !important;
+  font-size: 11px !important
+}
+.vehicle_table_outer_roadmap {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: transparent !important;
+  font-size: 11px !important
+}
+.license_number_marker {
+  background-color: rgb(248, 221, 195);
+  padding: 0.2em;
+  border-radius: 0.1em;
+  color: rgb(59, 18, 18);
+  font-weight: bold;
+}
+
+.license_number_box .gm-ui-hover-effect {
+  visibility: hidden;
+}
+
+/* style open street map */
+
+
+.leaflet-popup-tip {
+  background: rgba(0, 0, 0, 0) !important; 
+  border: none !important;
+  box-shadow: none !important; 
+}
+
+/* .leaflet-popup-content-wrapper{
+  margin-top: 25px !important;
+} */

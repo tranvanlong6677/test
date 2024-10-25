@@ -1,0 +1,24 @@
+.itemMenu {
+  display: inline-block;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-left: 15px;
+  color: #475461;
+  font-size: 16px;
+}
+
+.itemMenu:hover {
+    color: #C62222;
+}
+
+.itemMenu-active {
+  color: #C62222;
+  font-weight: 700;
+}
+.menu-right-icon {
+  border: 1px solid #858C93 !important;
+  margin-left: 10px !important;
+  color: #858C93 !important;
+}

@@ -1,0 +1,39 @@
+.list-vehicle-group {
+    min-height: calc(100vh - 150px) !important;
+    max-height: calc(100vh - 200px) !important;
+
+    box-shadow: none !important;
+
+    background-color: white;
+}
+
+.list-vehicles {
+    width: 100% !important;
+    max-height: calc(90vh - 200px) !important;
+    overflow-y:auto;
+    overflow-x: hidden;
+}
+.searchVehicleGroup {
+    justify-content: center;
+    width: 100%  !important;
+    background: white;
+    border-radius: 4px !important;
+    height: 40px !important;
+    border: 1px solid #E5E5E8 !important;
+}
+
+.vehicle-group-selected {
+    font-weight: bold !important;
+    color: red !important;
+    background-color: #FFF1F1 !important;
+}
+
+.searchVehicleGroup fieldset {
+    display: none;
+}
+
+.button-tranfer-group > .MuiGrid-root > button {
+    background: #C62222; 
+    color: white;
+    margin: 0.5em 0px;
+}

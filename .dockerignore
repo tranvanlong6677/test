@@ -1,0 +1,13 @@
+node_modules
+build
+
+.git
+.idea
+.vscode
+.editorconfig
+.prettierrc
+.prettierignore
+
+
+factory
+Dockerfile

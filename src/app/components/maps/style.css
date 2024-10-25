@@ -1,0 +1,79 @@
+.selected_range {
+  background: #c62222 !important;
+  color: white !important;
+}
+.header_table {
+  margin-top: 1em !important;
+}
+.menu_map{
+  height: 100%;
+}
+
+.car-status-wrapper {
+  position: relative;
+}
+.CarStatusIcon {
+  cursor: pointer;
+  display: block;
+  height: 48px;
+  width: 48px;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  border: 1px solid #E5E5E8 !important;
+  margin: 0 auto;
+}
+.CarStatusIcon:hover {
+  background-color: #ffc0c0b3;
+}
+
+.CarStatusActive {
+  background-color: #ffc0c0b3 !important;
+}
+
+.car-status-bar {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 0.5em;
+}
+.car-status-wrapper{
+  margin: 0px 7px;
+}
+
+.CarCount {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 10px;
+  background:#C62222;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  padding-top: 4px;
+}
+
+.imageCar {
+  margin-top: 8px;
+  margin-left: 6px;
+}
+
+
+.float-right {
+  float: right;
+}
+
+.list_tracking_action {
+  margin-right: 0.5em;
+  cursor: pointer;
+}
+
+.Mui-disabled {
+    color: rgba(0, 0, 0, 0.26) !important;
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.12) !important;
+}
+.Mui-disabled:hover {
+  cursor: not-allowed !important;
+}
