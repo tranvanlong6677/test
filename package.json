@@ -91,6 +91,7 @@
     "socket.io-client": "^4.1.1",
     "styled-components": "^5.3.0",
     "uuid": "^8.3.0",
+    "vncss": "file:",
     "yup": "^0.29.3"
   },
   "devDependencies": {
