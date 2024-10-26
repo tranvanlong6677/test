@@ -1,48 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import InfoVehiceBox from 'src/app/components/maps/InfoVehicleBox';
-import MenuBox from 'src/app/components/maps/MenuBox';
-import { ArrowRight, ContactMailSharp } from '@material-ui/icons';
-import { splitAndMergeLatLng, renderIconCar1 } from 'src/app/utils/mapService';
-import {
-  getListVehicle,
-  setCenterMap,
-  getListVehicleTracking
-} from 'src/features/vehicleSlice';
-import { getDetailDevicePosition } from 'src/features/deviceSlice';
-import _size from 'lodash/size';
-import axios from 'axios';
-import './style.css';
-import RotateIcon from 'src/app/utils/RotateIcon';
-import { Button, List, ListItem, Divider } from '@material-ui/core';
-import { INFOR_CAR } from 'src/app/constant/config';
-import moment from 'moment';
-import { useLocation, useParams } from 'react-router';
-import { dataGPS } from './constance';
-
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  ZoomControl,
-  Tooltip,
-  Polygon,
-  Polyline,
-  GeoJSON
-} from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import { Button, Divider, List, ListItem } from '@material-ui/core';
+import { ArrowRight } from '@material-ui/icons';
+import L from 'leaflet';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
 import 'leaflet-control-geocoder/dist/Control.Geocoder.js';
-import L from 'leaflet';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import 'leaflet/dist/leaflet.css';
+import _size from 'lodash/size';
+import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
+import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { FullscreenControl } from 'react-leaflet-fullscreen';
 import 'react-leaflet-fullscreen/styles.css';
-import mkIcon from '../../assets/mkicon.png';
-
-const options = { closeBoxURL: '', enableEventPropagation: true };
+import { useDispatch, useSelector } from 'react-redux';
+import InfoVehiceBox from 'src/app/components/maps/InfoVehicleBox';
+import MenuBox from 'src/app/components/maps/MenuBox';
+import { INFOR_CAR } from 'src/app/constant/config';
+import { renderIconCar1 } from 'src/app/utils/mapService';
+import RotateIcon from 'src/app/utils/RotateIcon';
+import { getDetailDevicePosition } from 'src/features/deviceSlice';
+import './style.css';
 
 function MapOsm2({ listVehicle }) {
   const dispatch = useDispatch();
@@ -57,38 +34,30 @@ function MapOsm2({ listVehicle }) {
   const [open, setOpen] = useState(false);
   const [position, setPosition] = useState([]);
   const [follow, setFollow] = useState(false);
-  // const [center, setCenter] = useState({ lat: 21.0278, lng: 105.8342 });
   const [mode, setMode] = useState('lo_trinh');
   const [line, setLine] = useState([]);
-  const [lineOsm, setLineOsm] = useState([]);
-  const [dataOsm, setDataOsm] = useState({});
+
   const [snapped, setSnapped] = useState([]);
   const [showMenu, setShowMenu] = useState(true);
-  const [stoppedPoint, setStoppedPoint] = useState([]);
   const [endPoint, setEndPoint] = useState();
-  const [zoom, setZoom] = useState(13);
   const [showInfoWindow, setShowInfoWindow] = useState(false);
   const [speed, setSpeed] = useState(10);
   const [carIdSelected, setCarIdSelected] = useState();
-  const [carSelected, setCarSelected] = useState();
   const [startPoint, setStartPoint] = useState();
   const [positionNext, setPositionNext] = useState();
-  const [positionPrevious, setPositionPrevious] = useState();
   const [originalPoints, setOriginalPoints] = useState([]);
   const [timer, setTimer] = useState(null);
-  const [rotate, setRotate] = useState(0);
   const [original, setOriginal] = useState();
   const [icons, setIcons] = useState([]);
   const markerRef = useRef();
   //osm
-  const [mapRef, setMapRef] = useState(null);
   const handleClose = () => {
     setOpen(false);
   };
 
   const getPosCarNext = counter => {
     if (counter < snapped.length) {
-      var timer = setTimeout(function () {
+      var timer = setTimeout(function() {
         counter++;
         if (
           !(
@@ -98,7 +67,6 @@ function MapOsm2({ listVehicle }) {
         ) {
           setPosition(snapped[counter]);
           setPositionNext(snapped[counter + 1]);
-          setPositionPrevious(snapped[counter - 1]);
         }
 
         setOriginal(snapped[counter]);
@@ -113,10 +81,7 @@ function MapOsm2({ listVehicle }) {
     if (_size(original) > 0 && follow) {
       const nline = line.concat(original);
       setLine(nline);
-      //const lineOsmArr = nline.map((lineItem, index) => {
-      //  return [lineItem.lng, lineItem.lat];
-      //});
-      //setLineOsm(lineOsmArr);
+
       if (original.originalIndex !== null) {
         const oPoint = originalPoints.concat(original);
         setOriginalPoints(oPoint);
@@ -127,7 +92,7 @@ function MapOsm2({ listVehicle }) {
   console.log('original ===>', original);
 
   useEffect(() => {
-    if (mode == 'all') {
+    if (mode === 'all') {
       clearTimeout(timer);
     }
   }, [mode]);
@@ -163,7 +128,7 @@ function MapOsm2({ listVehicle }) {
 
   const loadSnapApi = posDevice => {
     if (posDevice.length > 0) {
-      const newSnap = posDevice?.map(function (value) {
+      const newSnap = posDevice?.map(function(value) {
         return {
           lat: value?.location.latitude,
           lng: value?.location.longitude,
@@ -183,7 +148,7 @@ function MapOsm2({ listVehicle }) {
         };
       });
       setSnapped(newSnap);
-      const arrNotNull = posDevice.filter(function (el) {
+      const arrNotNull = posDevice.filter(function(el) {
         return el != null;
       });
       const sPoint = [
@@ -252,12 +217,10 @@ function MapOsm2({ listVehicle }) {
   const resetTracking = () => {
     setFollow(false);
     setLine([]);
-    setStoppedPoint([]);
     setOriginalPoints([]);
     setPosition(snapped[0]);
     setPositionNext();
-    setPositionPrevious();
-    setCarSelected();
+
     clearTimeout(timer);
   };
 
@@ -296,8 +259,6 @@ function MapOsm2({ listVehicle }) {
 
   const getVihicle = v => {
     handleMarkerClick(v);
-    setCarSelected(v);
-    setZoom(20);
   };
 
   const handleDisplayIconFlag = statusIcon => {
@@ -343,31 +304,30 @@ function MapOsm2({ listVehicle }) {
       ''
     );
 
-  useEffect(() => {
-    setCarSelected(positionsDevice);
-  }, [carIdSelected]);
   //Set icons
   useEffect(() => {
     const updateIcons = async () => {
       if (listVehicle && listVehicle.length > 0) {
-        const newIcons = await Promise.all(listVehicle.map(async (vehicle) => {
-          if (vehicle && vehicle.lat && vehicle.lng) {
-            const icon = await handleDisplayIcon(vehicle);
-            return { ...vehicle, icon };
-          }
-          return null;
-        }));
+        const newIcons = await Promise.all(
+          listVehicle.map(async vehicle => {
+            if (vehicle && vehicle.lat && vehicle.lng) {
+              const icon = await handleDisplayIcon(vehicle);
+              return { ...vehicle, icon };
+            }
+            return null;
+          })
+        );
         setIcons(newIcons);
       } else {
         setIcons([]); // Nếu không thỏa mãn điều kiện, reset icons
       }
     };
-    if (mode == "all") updateIcons();
+    if (mode === 'all') updateIcons();
   }, [mode, listVehicle]);
   const getDegree = (pos1, pos2) => {
     if (
-      Number(pos1.lat) != Number(pos2.lat) ||
-      Number(pos1.lng) != Number(pos2.lng)
+      Number(pos1.lat) !== Number(pos2.lat) ||
+      Number(pos1.lng) !== Number(pos2.lng)
     ) {
       const point1LatLng = {
         lat: Number(pos1.lat),
@@ -387,8 +347,6 @@ function MapOsm2({ listVehicle }) {
           180) /
         Math.PI;
 
-      const actualAngle = angle;
-      const markerUrl = '/static/iconSvg/cars/car_moving.svg';
       if (markerRef.current) {
         const markerElement = markerRef.current.getElement();
         if (markerElement) {
@@ -398,10 +356,12 @@ function MapOsm2({ listVehicle }) {
     }
   };
 
-  const handleDisplayIcon = async (vehicle) => {
+  const handleDisplayIcon = async vehicle => {
     const iconSize = [35, 35];
-    const rotateIcon = RotateIcon.makeIcon(renderIconCar1(vehicle ? vehicle.status : ''));
-    await rotateIcon.setRotation({ deg: vehicle.direction })
+    const rotateIcon = RotateIcon.makeIcon(
+      renderIconCar1(vehicle ? vehicle.status : '')
+    );
+    await rotateIcon.setRotation({ deg: vehicle.direction });
     const updatedIconUrl = rotateIcon.getUrl();
     let makerIcon = new L.icon({
       iconUrl: updatedIconUrl,
@@ -409,21 +369,6 @@ function MapOsm2({ listVehicle }) {
       iconAnchor: [17, 35],
       popupAnchor: [0, -46]
     });
-    return makerIcon;
-  };
-
-  const displayIconStop = () => {
-    const iconSize = [35, 35];
-    const url = renderIconCar1('stopped');
-
-    let makerIcon = new L.icon({
-      iconUrl: url,
-      iconSize: iconSize,
-      iconAnchor: [17, 45],
-      popupAnchor: [0, -46]
-    });
-
-    L.Marker.prototype.options.icon = makerIcon;
     return makerIcon;
   };
 
@@ -441,7 +386,7 @@ function MapOsm2({ listVehicle }) {
     L.Marker.prototype.options.icon = makerIcon;
     return makerIcon;
   };
-  console.log('check osm ===>', lineOsm);
+
   return (
     <>
       <InfoVehiceBox
@@ -471,7 +416,6 @@ function MapOsm2({ listVehicle }) {
         setMode={setMode}
         setLine={setLine}
       />
-
       <MapContainer
         center={center}
         zoom={15}
@@ -479,51 +423,72 @@ function MapOsm2({ listVehicle }) {
         style={{ height: '92vh' }}
         zoomControl={false}
         scrollWheelZoom={true}
-        whenCreated={mapR => setMapRef(mapR)}
+        whenCreated={() => {}}
         zoomAnimation={true}
-      //fullscreenControl={true}
       >
         <TileLayer
           attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png?key=ZLjliqReTSXGIpeOzHPo"
-        // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <FullscreenControl forceSeparateButton={true} position="topright" />
-        {showInfoWindow && positionsInfoBox ? <Popup
-          className="info_vehicle_window"
-          popupclose={handleCloseInfo}
-          position={[positionsInfoBox.lat, positionsInfoBox.lng]}
-          eventHandlers={{
-            remove: handleCloseInfo,
-          }}
-        >
-          <>
-            <span color="primary" style={{ color: '#C62222', fontSize: '20px', fontWeight: 600 }}>
-              Thông tin xe:
-            </span>
-            <List component="nav" style={{ padding: '0', width: '375px !important' }}>
-
-              {
-                INFOR_CAR.map((infor, index) =>
+        {showInfoWindow && positionsInfoBox ? (
+          <Popup
+            className="info_vehicle_window"
+            popupclose={handleCloseInfo}
+            position={[positionsInfoBox.lat, positionsInfoBox.lng]}
+            eventHandlers={{
+              remove: handleCloseInfo
+            }}
+          >
+            <>
+              <span
+                color="primary"
+                style={{ color: '#C62222', fontSize: '20px', fontWeight: 600 }}
+              >
+                Thông tin xe:
+              </span>
+              <List
+                component="nav"
+                style={{ padding: '0', width: '375px !important' }}
+              >
+                {INFOR_CAR.map((infor, index) => (
                   <>
-                    <ListItem disableGutters style={{ padding: '0', paddingTop: '5px', paddingBottom: '5px', display: 'inline-block' }}>
+                    <ListItem
+                      disableGutters
+                      style={{
+                        padding: '0',
+                        paddingTop: '5px',
+                        paddingBottom: '5px',
+                        display: 'inline-block'
+                      }}
+                    >
                       <div style={{ float: 'left' }}>
-                        <img src={`/static/iconSvg/${infor.icon}.svg`} style={{ paddingRight: '5px' }} />
+                        <img
+                          src={`/static/iconSvg/${infor.icon}.svg`}
+                          style={{ paddingRight: '5px' }}
+                          alt="img"
+                        />
                         <b> {infor.label} </b>
                       </div>
 
-                      <div style={{ float: 'right', textAlign: 'right', minWidth: '230px', maxWidth: '248px' }}>
+                      <div
+                        style={{
+                          float: 'right',
+                          textAlign: 'right',
+                          minWidth: '230px',
+                          maxWidth: '248px'
+                        }}
+                      >
                         {renderValueInWindowBox(infor)}
                       </div>
                     </ListItem>
                     <Divider />
                   </>
-                )
-              }
-            </List>
-          </>
-        </Popup> : null
-        }
+                ))}
+              </List>
+            </>
+          </Popup>
+        ) : null}
         {mode == 'lo_trinh' && follow ? (
           <>
             <GeoJSON
@@ -534,30 +499,13 @@ function MapOsm2({ listVehicle }) {
                   coordinates: snapped.map((lineItem, index) => {
                     return [lineItem.lng, lineItem.lat];
                   })
-                  
                 },
                 properties: {}
               }}
             />
 
-            {
-            /*stoppedPoint.map((position, index) => (
+            {position?.lat && position?.lng ? (
               <Marker
-                zIndexOffset={1}
-                options={{
-                  rotation: 90
-                }}
-                key={index}
-                position={[Number(position?.lat), Number(position?.lng)]}
-                eventHandlers={{
-                  click: position => handleMarkerClick(position)
-                }}
-                icon={displayIconStop('stopped')}
-              />
-            ))*/}
-            {
-              
-              position?.lat && position?.lng ? <Marker
                 position={[Number(position?.lat), Number(position?.lng)]}
                 className="lo_trinh"
                 ref={markerRef}
@@ -566,44 +514,48 @@ function MapOsm2({ listVehicle }) {
                 }}
                 icon={displayIcon1()}
                 zIndexOffset={5}
-              /> : null
-            }
-
+              />
+            ) : null}
           </>
         ) : (
           ''
         )}
 
-        {mode == 'lo_trinh' ? renderStartPoint() : ''}
+        {mode === 'lo_trinh' ? renderStartPoint() : ''}
 
-        {mode == 'all' && listVehicle && listVehicle.length > 0
+        {mode === 'all' && listVehicle && listVehicle.length > 0
           ? listVehicle.map((vehicle, index) => (
-            <>
-              {vehicle && vehicle.lat && vehicle.lng ? (
-                <Marker
-                  key={index}
-                  options={{
-                    rotation: 50,
-                    anchor: (0, 0)
-                  }}
-                  position={[Number(vehicle.lat), Number(vehicle.lng)]}
-                  eventHandlers={{
-                    click: () => handleMarkerClick(vehicle)
-                  }}
-                  icon={icons.length > 0 ? icons.find(i => i.device_id === vehicle.device_id).icon : L.icon({
-                    iconUrl: renderIconCar1(vehicle ? vehicle.status : ''),
-                    iconSize: [35, 35],
-                    iconAnchor: [17, 35],
-                    popupAnchor: [0, -46],
-                  })}
-                >
-
-                </Marker >
-              ) : null}
-            </>
-          ))
+              <>
+                {vehicle && vehicle.lat && vehicle.lng ? (
+                  <Marker
+                    key={index}
+                    options={{
+                      rotation: 50,
+                      anchor: (0, 0)
+                    }}
+                    position={[Number(vehicle.lat), Number(vehicle.lng)]}
+                    eventHandlers={{
+                      click: () => handleMarkerClick(vehicle)
+                    }}
+                    icon={
+                      icons.length > 0
+                        ? icons.find(i => i.device_id === vehicle.device_id)
+                            .icon
+                        : L.icon({
+                            iconUrl: renderIconCar1(
+                              vehicle ? vehicle.status : ''
+                            ),
+                            iconSize: [35, 35],
+                            iconAnchor: [17, 35],
+                            popupAnchor: [0, -46]
+                          })
+                    }
+                  ></Marker>
+                ) : null}
+              </>
+            ))
           : null}
-      </MapContainer >
+      </MapContainer>
     </>
   );
 }

@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { number } from 'prop-types';
 import { HTTP_GETTYPE, STATUS_API } from 'src/app/constant/config';
 import AxiosAdapter from './AxiosAdapter';
 
@@ -15,21 +14,20 @@ export const getListVehicleTracking = AxiosAdapter.GetHttp(
   HTTP_GETTYPE.DETAIL
 );
 
-
 export const createVehicleType = AxiosAdapter.HttpPost(
-    'vehicleTypeSlice/createVehicleType',
-    '/vehicle_type'
-)
+  'vehicleTypeSlice/createVehicleType',
+  '/vehicle_type'
+);
 
 export const updateVehicleType = AxiosAdapter.HttpUpdateById(
   'vehicleTypeSlice/updateVehicleType',
   '/vehicle_type'
-)
+);
 
 export const deleteVehicleType = AxiosAdapter.HttpDelete(
-    'vehicleTypeSlice/deleteVehicleType',
-    'vehicle_type',
-)
+  'vehicleTypeSlice/deleteVehicleType',
+  'vehicle_type'
+);
 
 export const vehicleTypeSlice = createSlice({
   name: 'vehicleTypeSlice',
@@ -38,10 +36,10 @@ export const vehicleTypeSlice = createSlice({
     total: 0,
     errorGetList: null,
     statusGetAll: null,
-    statusDelete: null, 
+    statusDelete: null,
     statusCreate: null,
     statusUpdate: null,
-    isLoading: false, 
+    isLoading: false
   },
 
   reducers: {
@@ -64,11 +62,10 @@ export const vehicleTypeSlice = createSlice({
     [getListVehicleTypes.fulfilled]: (state, action) => {
       state.statusGetAll = STATUS_API.SUCCESS;
 
-      state.listVehicleTypes = action.payload.payload.types
+      state.listVehicleTypes = action.payload.payload.types;
 
       state.total = action.payload.payload.number_of_item;
       state.isLoading = false;
-
     },
     [getListVehicleTypes.rejected]: (state, action) => {
       state.statusGetAll = STATUS_API.ERROR;
@@ -77,25 +74,24 @@ export const vehicleTypeSlice = createSlice({
     },
 
     [createVehicleType.pending]: state => {
-        state.statusCreate = STATUS_API.PENDING;
+      state.statusCreate = STATUS_API.PENDING;
     },
     [createVehicleType.fulfilled]: (state, action) => {
-
-        state.statusCreate = STATUS_API.SUCCESS;
+      state.statusCreate = STATUS_API.SUCCESS;
     },
     [createVehicleType.rejected]: (state, action) => {
-        state.statusCreate = STATUS_API.ERROR;
-        state.errors = action.payload.message;
+      state.statusCreate = STATUS_API.ERROR;
+      state.errors = action.payload.message;
     },
     [deleteVehicleType.pending]: state => {
-        state.statusDelete = STATUS_API.PENDING;
+      state.statusDelete = STATUS_API.PENDING;
     },
     [deleteVehicleType.fulfilled]: (state, action) => {
-        state.statusDelete = STATUS_API.SUCCESS;
+      state.statusDelete = STATUS_API.SUCCESS;
     },
     [deleteVehicleType.rejected]: (state, action) => {
-        state.statusDelete = STATUS_API.ERROR;
-        state.errors = action.payload.message;
+      state.statusDelete = STATUS_API.ERROR;
+      state.errors = action.payload.message;
     },
     [updateVehicleType.pending]: state => {
       state.statusUpdate = STATUS_API.PENDING;
@@ -109,8 +105,6 @@ export const vehicleTypeSlice = createSlice({
     }
   }
 });
-export const {
-  resetChange,
-} = vehicleTypeSlice.actions;
+export const { resetChange } = vehicleTypeSlice.actions;
 
 export default vehicleTypeSlice.reducer;

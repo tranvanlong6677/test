@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -6,10 +6,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import './style.css';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import './style.css';
 
 const StyledTableRow = withStyles(theme => ({
   root: {
@@ -20,40 +19,15 @@ const StyledTableRow = withStyles(theme => ({
   }
 }))(TableRow);
 
-const VehicleRoadMapTable = ({
-  vehicles,
-  getVihicle,
-  mode,
-  isLoading,
-  showColumns
-}) => {
+const VehicleRoadMapTable = ({ vehicles, getVihicle, mode, showColumns }) => {
   const scrollToBottom = () => {
     vehiclesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  const {
-    gpsSpeedCol,
-    speedCol,
-    airConditionStatusCol,
-    engineStatusCol
-  } = showColumns;
-  const positionsDevice = useSelector(
-    state => state.deviceSlice.positionsDevice
-  );
+  const { gpsSpeedCol, speedCol, engineStatusCol } = showColumns;
+
   const vehiclesEndRef = useRef(null);
-  //console.log('=====>VehicleRoadMapTable:', vehicles, mode, showColumns);
-  // const [kmRender, setKm] = useState(0);
-  // useEffect(() => {
-  //   let km = 0;
-  //   positionsDevice && positionsDevice.map((item) => {
-  //     if (item.originalIndex) {
-  //       km = km + item.speedDigitalMeter;
-  //     }
-  //   })
-  //   setKm(km);
-  // }, [positionsDevice])
+
   const handleRowClick = vehicle => {
-    // console.log('handleRowClick****',vehicle);
-    // console.log('mode***',mode);
     if (mode === 'all') {
       getVihicle(vehicle);
     }
@@ -112,7 +86,6 @@ const VehicleRoadMapTable = ({
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "8px" }}>Tổng số km {kmRender}</div> */}
     </div>
   );
 };
