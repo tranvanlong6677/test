@@ -1,9 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { HTTP_GETTYPE, STATUS_API } from 'src/app/constant/config';
 import AxiosAdapter from './AxiosAdapter';
-import axios from 'axios';
-import { _convertObjectToQuery } from '../app/utils/apiService';
-import Cookie from 'js-cookie';
 
 export const getListVehicle = AxiosAdapter.GetHttp(
   'vehicleSlice/GetListVehicles',
@@ -17,7 +14,6 @@ export const getListVehicleTracking = AxiosAdapter.GetHttp(
   HTTP_GETTYPE.DETAIL
 );
 
-
 export const getDetailVehicle = AxiosAdapter.GetHttp(
   'vehicleSlice/GetDetailVehicle',
   '/vehicles/',
@@ -28,7 +24,7 @@ export const getVehicleByOwnerId = AxiosAdapter.GetHttp(
   'vehicleSlice/GetVehicleByOwnerId',
   '/vehicles/users/',
   HTTP_GETTYPE.DETAIL
-)
+);
 
 export const vehicleSlice = createSlice({
   name: 'vehicleSlice',
@@ -56,9 +52,7 @@ export const vehicleSlice = createSlice({
     selectedLicensePlate: null,
     existLincesePlate: true,
     positionsVehicle: null,
-    isLoading: false,
-
-    
+    isLoading: false
   },
 
   reducers: {
@@ -68,7 +62,6 @@ export const vehicleSlice = createSlice({
 
     setSelectedLicensePlate: (state, action) => {
       state.selectedLicensePlate = action.payload;
-     
     },
 
     setCenterMap: (state, action) => {
@@ -78,7 +71,6 @@ export const vehicleSlice = createSlice({
 
     setExistLincesePlate: (state, action) => {
       state.selectedLicensePlate = action.payload;
-
     },
 
     setGetListLoading: (state, action) => {
@@ -87,7 +79,6 @@ export const vehicleSlice = createSlice({
 
     setAgencySelected: (state, action) => {
       state.agencySelected = action.payload;
-     
     },
 
     resetChange: state => {
@@ -96,10 +87,7 @@ export const vehicleSlice = createSlice({
       state.userSelected = null;
       state.selectedLicensePlate = null;
       state.isLoading = false;
-    },
-
-    
-
+    }
   },
   extraReducers: {
     [getListVehicle.pending]: state => {
@@ -109,10 +97,10 @@ export const vehicleSlice = createSlice({
       state.totalVehicle = 0;
     },
     [getListVehicle.fulfilled]: (state, action) => {
-      console.log('action getListVehicle',action);
+      console.log('action getListVehicle', action);
       state.statusGetAll = STATUS_API.SUCCESS;
 
-      state.listVehicle = action.payload.payload.vehicles
+      state.listVehicle = action.payload.payload.vehicles;
 
       state.totalVehicle = action.payload.payload.numberOfItem;
     },
@@ -123,7 +111,10 @@ export const vehicleSlice = createSlice({
 
     [getListVehicleTracking.pending]: state => {
       state.isLoading = true;
-      if (state.listVehicleTracking.length === 0 || state.statusGetListTracking === STATUS_API.LOADING) {
+      if (
+        state.listVehicleTracking.length === 0 ||
+        state.statusGetListTracking === STATUS_API.LOADING
+      ) {
         state.listVehicleTracking = [];
       }
       state.totalVehicleTracking = 0;
@@ -131,11 +122,17 @@ export const vehicleSlice = createSlice({
     [getListVehicleTracking.fulfilled]: (state, action) => {
       //console.log('action getListVehicleTracking',action);
       state.statusGetListTracking = STATUS_API.SUCCESS;
-      state.listVehicleTracking = action.payload.payload.latest_periodics.sort(function (a, b) {
-        if (a.license_plate < b.license_plate) { return -1; }
-        if (a.license_plate > b.license_plate) { return 1; }
-        return 0;
-      });
+      state.listVehicleTracking = action.payload.payload.latest_periodics.sort(
+        function(a, b) {
+          if (a.license_plate < b.license_plate) {
+            return -1;
+          }
+          if (a.license_plate > b.license_plate) {
+            return 1;
+          }
+          return 0;
+        }
+      );
       state.statisticVehicleTracking = action.payload.payload.statistic;
       state.isLoading = false;
     },
@@ -145,14 +142,13 @@ export const vehicleSlice = createSlice({
       state.isLoading = true;
     },
 
-
     [getDetailVehicle.pending]: state => {
       state.statusGetDetail = STATUS_API.PENDING;
       state.err = null;
       state.detailVehicle = null;
     },
     [getDetailVehicle.fulfilled]: (state, action) => {
-      console.log('action getDetailVehicle',action);
+      console.log('action getDetailVehicle', action);
       state.statusGetDetail = STATUS_API.SUCCESS;
       state.detailVehicle = action.payload.payload.vehicle;
     },
@@ -166,7 +162,7 @@ export const vehicleSlice = createSlice({
       state.listVehicle = [];
     },
     [getVehicleByOwnerId.fulfilled]: (state, action) => {
-      console.log('action getVehicleByOwnerId',action);
+      console.log('action getVehicleByOwnerId', action);
       state.statusGetVehicleByOwnerId = STATUS_API.SUCCESS;
       state.errorGetVehicleByOwnerId = null;
       state.listVehicle = action.payload.payload.vehicles;
@@ -185,8 +181,7 @@ export const {
   setSelectedLicensePlate,
   setExistLincesePlate,
   setGetListLoading,
-  setAgencySelected,
-  
+  setAgencySelected
 } = vehicleSlice.actions;
 
 export default vehicleSlice.reducer;
