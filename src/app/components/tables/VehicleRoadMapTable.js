@@ -37,7 +37,6 @@ const VehicleRoadMapTable = ({ vehicles, getVihicle, mode, showColumns }) => {
   }, [vehicles]);
   return (
     <div style={{ minHeight: '130px' }}>
-      bảng hiển thị lộ trình
       <TableContainer component={Paper} className="vehicle_table_road_map">
         <Table stickyHeader aria-label="sticky table">
           <TableHead
