@@ -23,6 +23,7 @@ import './style.css';
 
 function MapOsm2({ listVehicle }) {
   const dispatch = useDispatch();
+  const pathName = location.pathname;
 
   const statusGetAll = useSelector(state => state.vehicleSlice.statusGetAll);
   const positionsDevice = useSelector(
@@ -107,9 +108,7 @@ function MapOsm2({ listVehicle }) {
   }, [positionsDevice]);
 
   useEffect(() => {
-    if (snapped.length > 0) {
-      setFollow(true);
-    }
+    startFollow();
   }, [snapped]);
 
   useEffect(() => {
@@ -125,7 +124,7 @@ function MapOsm2({ listVehicle }) {
       getDegree(position, positionNext);
     }
   }, [positionNext, follow]);
-
+  console.log('original point', originalPoints);
   const loadSnapApi = posDevice => {
     if (posDevice.length > 0) {
       const newSnap = posDevice?.map(function(value) {
@@ -219,8 +218,9 @@ function MapOsm2({ listVehicle }) {
     setLine([]);
     setOriginalPoints([]);
     setPosition(snapped[0]);
-    setPositionNext();
 
+    setPositionNext();
+    setSnapped([]);
     clearTimeout(timer);
   };
 
@@ -324,6 +324,12 @@ function MapOsm2({ listVehicle }) {
     };
     if (mode === 'all') updateIcons();
   }, [mode, listVehicle]);
+
+  useEffect(() => {
+    resetTracking();
+    setFollow(false);
+  }, [pathName]);
+
   const getDegree = (pos1, pos2) => {
     if (
       Number(pos1.lat) !== Number(pos2.lat) ||
